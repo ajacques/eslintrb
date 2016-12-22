@@ -34,8 +34,7 @@ module Eslintrb
       if options == :defaults then
         @options = DEFAULTS.dup
       elsif options == :eslintrc then
-        raise '`.eslintrc` is not exist on current working directory.' unless File.exist?('./.eslintrc')
-        @options = MultiJson.load(File.read('./.eslintrc'))
+        @options = load_eslintrc_config
       elsif options.instance_of? Hash then
         @options = options.dup
         # @options = DEFAULTS.merge(options)
@@ -68,5 +67,16 @@ module Eslintrb
       @context.exec js.join("\n")
     end
 
+    private
+
+    def load_eslintrc_config
+      if File.exists?('./.eslinrc')
+        MultiJson.load(File.read('./.eslintrc'))
+      elsif File.exist?('./.eslintrc.yml')
+        YAML.load_file('./.eslintrc.yml')
+      else
+        raise 'Did not find either `.eslintrc` or `.eslintrc.yml` in the current working directory.'
+      end
+    end
   end
 end

@@ -74,7 +74,7 @@ Eslintrb.lint(source, options)
 Eslintrb.lint(source, :defaults)
 ```
 
-If you have a JSON `.eslintrc` file at the current directory you can pass `:eslintrc` as option and the file will be parsed. The resulting Hash will be used as options.
+If you have a JSON `.eslintrc` or a YAML `.eslintrc.yml` file in the current directory you can pass `:eslintrc` as option and the file will be parsed. The resulting Hash will be used as options.
 
 
 ```json
