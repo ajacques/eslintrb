@@ -27,7 +27,10 @@ module Eslintrb
       }
     }
 
-    SourcePath = File.expand_path("../../js/eslint.js", __FILE__)
+    SourcePath = [
+      File.expand_path("../../js/eslint.js", __FILE__),
+      File.expand_path('../../js/eslint-react.js', __FILE__)
+    ]
 
     def initialize(options = nil, globals = nil)
 
@@ -45,8 +48,12 @@ module Eslintrb
       end
 
       @globals = globals
+      file_contents = SourcePath.map do |file|
+        File.open(file, 'r:UTF-8').read
+      end
+      file_contents = file_contents.inject(:+)
 
-      @context = ExecJS.compile("var window = {}; \n" + File.open(SourcePath, "r:UTF-8").read)
+      @context = ExecJS.compile("var window = {}; \n" + file_contents)
     end
 
     def lint(source)
